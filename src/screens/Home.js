@@ -49,9 +49,9 @@ const Home = () => {
 
         <TouchableOpacity
           style={styles.button}
-            onPress={() => navigation.navigate('Downloads')}
+            onPress={() => navigation.navigate('PageScan')}
         >
-          <Text>Testing Nav</Text>
+          <Text style={styles.text}>Testing Nav</Text>
         </TouchableOpacity>
 
         <View style={gStyle.spacer3} />
@@ -63,6 +63,9 @@ const Home = () => {
 };
 
 const styles = StyleSheet.create({
+  text:{
+    color: '#000',
+  },
 
   button: {
     backgroundColor: '#FFF',
@@ -71,6 +74,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
+    color:'#000',
   }
 })
 
