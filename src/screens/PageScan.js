@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { Image } from 'react-native'
+import {ScrollView, Text, View, Button, TouchableOpacity, StyleSheet, Image } from 'react-native'
 import DocumentScanner from 'react-native-document-scanner-plugin'
+import {colors, gStyle} from "../constants";
+import Header from "../components/Header";
+import {useScrollToTop} from "@react-navigation/native";
 
 export default () => {
   const [scannedImage, setScannedImage] = useState();
@@ -13,18 +16,56 @@ export default () => {
     if (scannedImages.length > 0) {
       // set the img src, so we can view the first scanned image
       setScannedImage(scannedImages[0])
+      console.log(typeof scannedImages[0])
+      console.log(scannedImages[0])
     }
   }
+
+  const onScroll = (event) => {
+    let show = showHeader;
+    const currentOffset = event.nativeEvent.contentOffset.y;
+    show = currentOffset < offset;
+
+    if (show !== showHeader || offset <= 0) {
+      // account for negative value with "bounce" offset
+      if (offset <= 0) show = true;
+
+      setShowHeader(show);
+    }
+
+    setOffset(currentOffset);
+  };
 
   useEffect(() => {
     // call scanDocument on load
     scanDocument()
   }, []);
 
+  const ref = React.useRef(null);
+  useScrollToTop(ref);
+
   return (
-      <Image
-          resizeMode="contain"
-          source={scannedImage}
-      />
+      <View style={gStyle.container}>
+        <Header bg={colors.headerBarBg}/>
+        <ScrollView
+            ref={ref}
+            bounces
+            onScroll={onScroll}
+            scrollEventThrottle={16}
+            showsVerticalScrollIndicator={false}
+        >
+          <Text>
+            This is testing screen
+          </Text>
+
+          <Image
+              style={{ width: 500, height: 500 }}
+            source={{ uri: scannedImage }}
+          />
+
+          <View style={gStyle.spacer3} />
+
+        </ScrollView>
+      </View>
   )
 }
