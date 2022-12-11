@@ -4,20 +4,26 @@ import DocumentScanner from 'react-native-document-scanner-plugin'
 import {colors, gStyle} from "../constants";
 import Header from "../components/Header";
 import {useScrollToTop} from "@react-navigation/native";
+import RNFetchBlob from 'rn-fetch-blob'
 
 export default () => {
   const [scannedImage, setScannedImage] = useState();
+  const dirs = RNFetchBlob.fs.dirs;
+
 
   const scanDocument = async () => {
     // start the document scanner
-    const { scannedImages } = await DocumentScanner.scanDocument()
+    const { scannedImages } = await DocumentScanner.scanDocument({
+      responseType: 'base64',
+    });
 
     // get back an array with scanned image file paths
     if (scannedImages.length > 0) {
       // set the img src, so we can view the first scanned image
       setScannedImage(scannedImages[0])
       console.log(typeof scannedImages[0])
-      console.log(scannedImages[0])
+      console.log(scannedImages[0].slice(0,15))
+      console.log(dirs)
     }
   }
 
@@ -56,11 +62,12 @@ export default () => {
         >
           <Text>
             This is testing screen
+
           </Text>
 
           <Image
               style={{ width: 500, height: 500 }}
-            source={{ uri: scannedImage }}
+            source={{ uri: `data:image/png;base64,${scannedImage}` }}
           />
 
           <View style={gStyle.spacer3} />

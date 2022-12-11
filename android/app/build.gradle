@@ -277,6 +277,8 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+
+    implementation project(':rn-fetch-blob')
 }
 
 if (isNewArchitectureEnabled()) {
